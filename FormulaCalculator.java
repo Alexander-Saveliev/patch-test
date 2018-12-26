@@ -27,12 +27,19 @@ public class FormulaCalculatorImpl implements PrefixFormCalculator {
     }
 
     @Override
-    public void calculate(String formula) {
+    public void calculate(String formula) throws IllegalArgumentException, IndexOutOfBoundsException {
         formula = formula.replaceAll("[\\(\\)]", "");
         List<String> elements = Arrays.asList(formula.split(" "));
         for (int i = elements.size() - 1; i != 0; --i) {
             String item = elements.get(i);
             if (item.equals("")) {
+                continue;
+            }
+            if (!item.contains(Operation.operationToString(Operation.ADDITION))
+                    && !item.contains(Operation.operationToString(Operation.SUBTRACTION))
+                    && !item.contains(Operation.operationToString(Operation.MULTIPLICATION))
+                    && !item.contains(Operation.operationToString(Operation.DIVISION))) {
+                this.stack.push(item);
                 continue;
             }
             if (item.length() != 1) {
@@ -70,8 +77,6 @@ public class FormulaCalculatorImpl implements PrefixFormCalculator {
             case DIVISION:
                 this.divisionHandler();
                 break;
-            case SOME:
-                berak;
             default:
                 break;
         }
